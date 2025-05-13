@@ -1,0 +1,864 @@
+<antArtifact None>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holz-Luxus - Handgefertigte Holzautos</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1d1d1f;
+            --secondary-color: #86868b;
+            --accent-color: #0071e3;
+            --header-color: rgba(255, 255, 255, 0.8);
+            --card-bg: #f5f5f7;
+            --overlay-bg: rgba(0, 0, 0, 0.5);
+            --gradient-start: #f2f2f2;
+            --gradient-end: #e6e6e6;
+            --category-bg: rgba(0, 113, 227, 0.05);
+            --transition-speed: 0.5s;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1d1d1f;
+            --text-color: #f5f5f7;
+            --secondary-color: #a1a1a6;
+            --accent-color: #2997ff;
+            --header-color: rgba(29, 29, 31, 0.8);
+            --card-bg: #2c2c2e;
+            --overlay-bg: rgba(0, 0, 0, 0.7);
+            --gradient-start: #2c2c2e;
+            --gradient-end: #1d1d1f;
+            --category-bg: rgba(41, 151, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            transition: color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 48px;
+            background-color: var(--header-color);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            opacity: 1;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px 60px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            transition: background var(--transition-speed) ease;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 24px;
+            color: var(--secondary-color);
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .cta {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .parallax-container {
+            position: relative;
+            height: 70vh;
+            overflow: hidden;
+            margin: 60px 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .parallax-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: var(--card-bg);
+            transform: translateZ(0);
+            transition: transform 0.5s ease-out;
+        }
+
+        .category-section {
+            margin: 80px 0;
+            padding: 0 20px;
+        }
+
+        .category-header {
+            background-color: var(--category-bg);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .category-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .category-description {
+            color: var(--secondary-color);
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.5s ease, box-shadow 0.3s ease, background-color var(--transition-speed) ease;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-color: var(--card-bg);
+            transition: transform 0.7s ease;
+        }
+
+        .card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-content p {
+            font-size: 16px;
+            color: var(--secondary-color);
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .card-content .price {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .features {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            text-align: center;
+            transition: background var(--transition-speed) ease;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature {
+            padding: 30px 20px;
+            background-color: var(--bg-color);
+            border-radius: 16px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, background-color var(--transition-speed) ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            color: var(--accent-color);
+        }
+
+        .feature h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            font-size: 16px;
+            color: var(--secondary-color);
+        }
+
+        .testimonials {
+            padding: 80px 20px;
+        }
+
+        .testimonial {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .testimonial p {
+            font-size: 24px;
+            font-weight: 500;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .testimonial .author {
+            font-size: 18px;
+            color: var(--secondary-color);
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            padding: 60px 20px 40px;
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-column h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            margin-top: 60px;
+            font-size: 14px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .cookie-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--bg-color);
+            padding: 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(200%);
+            transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 1000;
+        }
+
+        .cookie-banner.show {
+            transform: translateY(0);
+        }
+
+        .cookie-text {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cookie-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cookie-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .cookie-accept {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .cookie-decline {
+            background-color: transparent;
+            border: 1px solid var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--overlay-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 2000;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--bg-color);
+            border-radius: 20px;
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            transform: scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), background-color var(--transition-speed) ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            position: relative;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            background-color: var(--card-bg);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .modal-description {
+            font-size: 16px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal-specs {
+            margin-bottom: 20px;
+        }
+
+        .modal-specs h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .spec-item {
+            padding: 10px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .spec-name {
+            font-size: 14px;
+            color: var(--secondary-color);
+        }
+
+        .spec-value {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .modal-footer {
+            padding: 0 30px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-price {
+            font-size: 22px;
+            font-style: italic;
+            color: var(--accent-color);
+        }
+
+        .modal-cta {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-cta:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-toggle-fixed {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 900;
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .theme-toggle-fixed:hover {
+            transform: scale(1.1);
+        }
+
+        .moon-icon {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.5s ease;
+        }
+
+        [data-theme="dark"] .moon-icon {
+            transform: rotate(180deg);
+        }
+
+        .scroll-up-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 90px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 900;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .scroll-up-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-up-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .modal-content {
+                max-width: 100%;
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .theme-toggle-fixed {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .scroll-up-btn {
+                bottom: 20px;
+                right: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Holz-Luxus</div>
+        <nav>
+            <ul>
+                <li><a href="#supersportwagen">Supersportwagen</a></li>
+                <li><a href="#luxuswagen">Luxuswagen</a></li>
+                <li><a href="#deutschesportwagen">Deutsche Sportwagen</a></li>
+                <li><a href="#features">Besonderheiten</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Handgefertigte Holzautos<br>Zeitlose Eleganz</h1>
+        <p>Erleben Sie die Kunst der Holzbearbeitung mit unseren detailgetreuen Nachbildungen weltberühmter Luxusautomobile.</p>
+        <a href="#supersportwagen" class="cta">Entdecken</a>
+    </section>
+
+    <div class="parallax-container">
+        <div class="parallax-image" style="background-image: url('/api/placeholder/1400/700');"></div>
+    </div>
+
+    <section class="category-section" id="supersportwagen">
+        <div class="category-header">
+            <h2 class="category-title">Supersportwagen</h2>
+            <p class="category-description">Kompromisslose Leistung, atemberaubendes Design und pure Geschwindigkeit – unsere handgefertigten Modelle der begehrtesten Supersportwagen der Welt.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card" data-model="bugatti">
+                <div class="card-image" style="background-image: url('/api/placeholder/400/300');"></div>
+                <div class="card-content">
+                    <h3>Bugatti Chiron</h3>
+                    <p>Hypersportwagen-Perfektion in Nussbaum. Jedes Detail des schnellsten Serienautos der Welt wurde sorgfältig in Holz nachgebildet.</p>
+                    <div class="price">Preis auf Anfrage</div>
+                </div>
+            </div>
+            
+            <div class="card" data-model="lamborghini">
+                <div class="card-image" style="background-image: url('/api/placeholder/400/300');"></div>
+                <div class="card-content">
+                    <h3>Lamborghini Aventador</h3>
+                    <p>Aggressives Design in Ahorn gefertigt. Die charakteristischen scharfen Kanten und futuristischen Linien wurden millimetergenau reproduziert.</p>
+                    <div class="price">Preis auf Anfrage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-section" id="luxuswagen">
+        <div class="category-header">
+            <h2 class="category-title">Luxuswagen</h2>
+            <p class="category-description">Makellose Handwerkskunst, erlesene Materialien und zeitlose Eleganz – unsere Modelle verkörpern den Geist des ultimativen Luxus.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card" data-model="rolls">
+                <div class="card-image" style="background-image: url('/api/placeholder/400/300');"></div>
+                <div class="card-content">
+                    <h3>Rolls-Royce Phantom</h3>
+                    <p>Luxus neu definiert in Kirschholz. Die majestätische Präsenz des Phantom wird durch die warme Tönung des edlen Holzes unterstrichen.</p>
+                    <div class="price">Preis auf Anfrage</div>
+                </div>
+            </div>
+            
+            <div class="card" data-model="bentley">
+                <div class="card-image" style="background-image: url('/api/placeholder/400/300');"></div>
+                <div class="card-content">
+                    <h3>Bentley Continental GT</h3>
+                    <p>Britische Eleganz in Mahagoni. Die kraftvolle und zugleich vornehme Silhouette wird durch das edle Mahagoniholz perfekt betont.</p>
+                    <div class="price">Preis auf Anfrage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-section" id="deutschesportwagen">
+        <div class="category-header">
+            <h2 class="category-title">Deutsche Sportwagen</h2>
+            <p class="category-description">Präzision trifft auf Leidenschaft – unsere Modelle deutscher Sportwagen verkörpern technische Exzellenz und zeitloses Design.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card" data-model="porsche">
+                <div class="card-image" style="background-image: url('/api/placeholder/400/300');"></div>
+                <div class="card-content">
+                    <h3>Porsche 911 Carrera</h3>
+                    <p>Ein Klassiker der Sportwagen in Eiche gefertigt. Die ikonische Silhouette und die unverwechselbaren Rundscheinwerfer wurden detailgetreu nachgebildet.</p>
+                    <div class="price">Preis auf Anfrage</div>
+                </div>
+            </div>
+            
+            <div class="card" data-model="mercedes">
+                <div class="card-image" style="background-image: url('/api/placeholder/400/300');"></div>
+                <div class="card-content">
+                    <h3>Mercedes-Benz AMG GT</h3>
+                    <p>Deutsche Ingenieurskunst in Zebrano. Die fließenden Linien und die kraftvolle Eleganz dieses GT-Sportwagens wurden perfekt in Holz eingefangen.</p>
+                    <div class="price">Preis auf Anfrage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">Besonderheiten</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🌳</div>
+                <h3>Nachhaltiges Holz</h3>
+                <p>Wir verwenden ausschließlich Holz aus nachhaltig bewirtschafteten Wäldern für jeden unserer Luxuswagen.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🔍</div>
+                <h3>Detailgetreu</h3>
+                <p>Jedes Modell wird mit höchster Präzision nach den originalen Fahrzeugplänen gefertigt – bis ins kleinste Detail.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">👐</div>
+                <h3>Handarbeit</h3>
+                <p>Vom ersten Schnitt bis zur letzten Politur – unsere Meister fertigen jedes Stück in reiner Handarbeit.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🎁</div>
+                <h3>Personalisierbar</h3>
+                <p>Individuelle Gravuren, Wunsch-Holzarten und maßgeschneiderte Präsentationsboxen auf Anfrage möglich.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <h2 class="section-title">Was unsere Kunden sagen</h2>
+        <div class="testimonial">
+            <p>"Die Qualität und die Detailtreue der Modelle ist einfach atemberaubend. Ein echtes Kunstwerk, das bei jedem Besucher für Begeisterung sorgt."</p>
+            <div class="author">- Michael S., Sammler</div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Holz-Luxus</h4>
+                <ul>
+                    <li><a href="#">Über uns</a></li>
+                    <li><a href="#">Unsere Werkstatt</a></li>
+                    <li><a href="#">Nachhaltigkeit</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Kollektionen</h4>
+                <ul>
+                    <li><a href="#supersportwagen">Supersportwagen</a></li>
+                    <li><a href="#luxuswagen">Luxuswagen</a></li>
+                    <li><a href="#deutschesportwagen">Deutsche Sportwagen</a></li>
+                    <li><a href="#">Limitierte Editionen</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Kundenservice</h4>
+                <ul>
+                    <li><a href="#">Kontakt</a></li>
+                    <li><a href="#">Versand & Lieferung</a></li>
+                    <li><a href="#">Pflegehinweise</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Rechtliches</h4>
+                <ul>
+                    <li><a href="#">Impressum</a></li>
+                    <li><a href="#">Datenschutz</a></li>
+                    <li><a href="#">AGB</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 valmonte. Alle Rechte vorbehalten.
+        </div>
+    </footer>
+
+    <div class="cookie-banner" id="cookie-banner">
+        <div class="cookie-text">
+            <p>Wir verwenden Cookies, um Ihr Erlebnis auf unserer Website zu verbessern. Mit der Nutzung unserer Website erklären Sie sich mit unserer Cookie-Richtlinie einverstanden.</p>
+        </div>
+        <div class="cookie-buttons">
+            <button class="cookie-btn cookie-decline" id="cookie-decline">Ablehnen</button>
+            <button class="cookie-btn cookie-accept" id="cookie-accept">Akzeptieren</button>
+        </div>
+    </div>
+
+    <div class="​​​​​​​​​​​​​​​​
